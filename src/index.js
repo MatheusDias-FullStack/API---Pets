@@ -61,6 +61,12 @@ app.get("/pets/:id", (req, res)=>{
     try{
         const {id} = req.params
         const pet = pets.find(item=> item.id === id)
+        if (!pet) {
+            return res.status(404).send({
+                ok: false,
+                mensagem: "Pet não encontrado"
+            });
+        }
         res.status(200).send({
             ok:true, 
             mensagem: "Pet encontrado",
