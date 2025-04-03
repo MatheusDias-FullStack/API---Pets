@@ -2,8 +2,9 @@ import express from 'express'
 import * as dotenv from 'dotenv'
 import { randomUUID } from 'crypto'
 import cors from 'cors'
-import {pets} from './dados.js'
+import { pets } from './dados.js'
 import { validateToCreatePet } from './middlewares.js'
+
 dotenv.config()
 
 const app = express()
@@ -17,11 +18,13 @@ app.listen(porta, ()=>{
 })
 // Listar pets
 app.get("/pets", (req, res)=>{
-    try{
+    try{ 
+        const data = pets
+        
         res.status(200).send({
             ok: true,
             mensagem: "Pets listados",
-            dados: pets
+            dados: data
         })
     }catch(error){
         res.status(500).send({
@@ -33,7 +36,7 @@ app.get("/pets", (req, res)=>{
 app.post("/pets", [validateToCreatePet], (req, res)=>{
     try{
         const body = req.body
-    
+        
         const newPet = {
             id: randomUUID(),
             nome: body.nome,
@@ -43,7 +46,7 @@ app.post("/pets", [validateToCreatePet], (req, res)=>{
         pets.push(newPet)
         res.status(201).send({
             ok:true,
-            mensagem: "Pet inserido com sucesso",
+            mensagem: "Pet adicionado com sucesso",
             dados: newPet
         })
     }catch(error){
@@ -109,6 +112,11 @@ app.delete("/pets/:id", (req, res)=>{
              })
         }
         pets.splice(petIndex, 1)
+        res.status(200).send({
+            ok: true,
+            mensagem: "Pet deletado",
+            dados: pets
+        })
     }catch(error){
         res.status(500).send({
             ok:false,
