@@ -15,6 +15,12 @@ export const validateToCreatePet = (req, res, next)=>{
                 mensagem: "Está falando o campo idade"
             })
         }
+        if(!body.raca){
+            return res.status(400).send({
+                ok: false, 
+                mensagem: "Está falando o campo raca"
+            })
+        }
         if(!body.nomeTutor){
             return res.status(400).send({
                 ok: false, 

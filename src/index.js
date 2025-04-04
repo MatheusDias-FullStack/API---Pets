@@ -41,6 +41,7 @@ app.post("/pets", [validateToCreatePet], (req, res)=>{
             id: randomUUID(),
             nome: body.nome,
             idade: body.idade,
+            raca: body.raca,
             nomeTutor: body.nomeTutor
         }
         pets.push(newPet)
@@ -79,9 +80,10 @@ app.get("/pets/:id", (req, res)=>{
             })
         }
 })  
-app.put("/pets/:id", (req, res)=>{
+app.put("/pets/:id", [validateToCreatePet], (req, res)=>{
     try{
         const {id} = req.params
+        const body = req.body
         const pet = pets.find(item=> item.id === id)
         if(!pet){
             return res.status(404).send({
@@ -89,10 +91,10 @@ app.put("/pets/:id", (req, res)=>{
                 mensagem: "Pet nao encontrado"
             })
         }
-        const body = req.body
-
+        
         pet.nome = body.nome
         pet.idade = body.idade
+        pet.raca = body.raca
         pet.nomeTutor = body.nomeTutor
         
         res.status(200).send({
